@@ -1,0 +1,23 @@
+{{extend 'layouts/form.html'}}
+
+{{block navbuttons}}
+{{if len(request.args) == 0:}}
+<a href="{{= URL(f='auth_user', args=['new'])}}" class="btn btn-primary">{{=T('New Record')}}</a>
+{{pass}}
+{{super}}
+{{end}}
+
+
+{{if request.args(0) == 'edit':}}
+<div class="row-fluid">
+	<div class="span7">
+		{{= content}}
+	</div>
+	<div class="span5">
+		{{= LOAD('default','auth_groups.load', args=['user', getlist(request.args, 1, 0)], ajax=True)}}
+	</div>
+</div>
+{{else:}}
+	{{= content}}
+{{pass}}
+

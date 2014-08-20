@@ -1,0 +1,84 @@
+{{extend 'layouts/form.html'}}
+
+<div class="row-fluid">
+	<div class="span8">
+		<h3>{{= my_represent_field(db.task.status, record.status, record)}}
+			<small> {{=  my_represent_field(db.task.platform_id, record.platform_id, record)}}</small>
+		</h3>
+	</div>
+	<div class="span4">
+		<div class="pull-right">
+		    <a href="{{= URL(c='default', f='task.html', args=['edit', record.id])}}" class="btn btn-small"><i class="icon-pencil"></i>{{= T('Edit')}}</a>
+		    <a href="{{= URL(c='default', f='task.html', args=['remove', record.id])}}" class="btn btn-small"><i class="icon-trash"></i></a>
+		</div>
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span12" style="max-height:200px;overflow-y:scroll;">
+		<p>{{=XML(record.what, sanitize=False)}}</p>
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span1">
+		<small><strong>{{= T('Priority')}}</strong></small>
+		<div>
+			{{= my_represent_field(db.task.priority, record.priority, record)}}
+		</div>	
+	</div>
+	<div class="span2">
+		<small><strong>{{= T('User Task')}}</strong></small>
+		<div>
+			{{= my_represent_field(db.task.user_task, record.user_task, record)}}
+		</div>
+	</div>
+	<div class="span4">
+
+	</div>
+	<div class="span5">
+		<div class="pull-right">
+			<div class="muted">
+				{{
+				pretty_date = prettydate(record.created_on, T)
+				author_name = '%(first_name)s %(last_name)s' % db.auth_user[record.created_by]
+				author_name = A(author_name, _href=URL(c='default', f='report', vars=dict(author=author_name) ))
+				}}
+				<small>{{=T('Created %s') % pretty_date}}</small>
+				<small>{{=XML( T(' by %s') % author_name )}}</small>
+			</div>		
+
+			<div class="muted">
+				{{
+				pretty_date = prettydate(record.updated_on, T)
+				author_name = '%(first_name)s %(last_name)s' % db.auth_user[record.updated_by]
+				author_name = A(author_name, _href=URL(c='default', f='report', vars=dict(author=author_name) ))
+				}}
+				<small>{{=T('Updated %s') % pretty_date}}</small>
+				<small>{{=XML( T(' by %s') % author_name )}}</small>
+			</div>		
+		</div>
+	</div>
+</div>
+
+{{= LOAD(f='task_detail_form.load', args=[record.id], ajax=True)}}
+
+<hr/>
+
+{{if has_test:}}
+{{include 'default/tests_frame.html'}}
+{{pass}}
+
+{{ 
+owner_table = record.owner_table
+owner_key  = record.owner_key
+}}
+
+{{if record.owner_table == 'solicitation':}}
+	{{= LOAD(f='solicitation_preview.load', vars=dict(oplink=record.owner_key), ajax=True)}}	
+	<hr/>
+{{pass}}
+
+{{include 'default/attachments_frame.html'}}
+
+<hr/>
+    
+{{include 'default/comments_frame.html'}}

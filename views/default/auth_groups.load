@@ -1,0 +1,48 @@
+<div class="navbar">
+	<div class="navbar-inner">
+		<div class="row-fluid">		
+			<div class="span10">
+				<h4>{{= T('User Groups') if request.args[0] == 'user' else T('Users Group') }}</h4>
+			</div>
+			<div class="span2">
+				<a id="select-all" class="btn btn-mini tooltip-bottom" data-original-title="{{= T('Select all')}}"><i class="icon-check"></i></a>
+				<a id="unselect-all" class="btn btn-mini tooltip-bottom" data-original-title="{{= T('Unselect all')}}"><i class="icon-ban-circle"></i></a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row-fluid">
+	{{=form.custom.begin}}
+	<table class="table table-condensed table-hover table-bordered" style="margin-top:5px;margin-bottom:5px;">
+		<tbody>
+			{{ for k, d, m in content: }}
+			<tr>
+				<td style="text-align:center;">
+					<input type="checkbox" style="margin:auto;" id="no_table_record_{{= k}}" name="record_{{= k}}"  value="{{= k}}" {{= 'checked="checked"' if m>0 else ''}}>
+				</td>
+				<td>
+					<label for="no_table_record_{{= k}}">
+						{{= d }}
+					</label>
+				</td>
+			</tr>
+			{{pass}}
+		</tbody>
+	</table>
+	{{=form.custom.submit}}
+	{{=form.custom.end}}
+</div>
+
+
+<script type="text/javascript">
+jQuery(function(){
+	$('#select-all').click(function (event) {
+		$(':checkbox').each(function () { this.checked = true; });
+	});
+
+	$('#unselect-all').click(function (event) {
+		$(':checkbox').each(function () { this.checked = false; });
+	});
+	$('.tooltip-bottom').tooltip({ placement: 'bottom' });	
+});
+</script>

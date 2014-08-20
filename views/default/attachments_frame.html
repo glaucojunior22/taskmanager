@@ -1,0 +1,22 @@
+<iframe id="frame_attachments" 
+	src="{{= URL(f='attachments.html', args=[owner_table, owner_key])}}" 
+	allowtransparency="true" 
+	frameborder="0" 
+	tabindex="0" 
+	width="100%" 
+	style="width: 100% !important; border: none !important; overflow: hidden !important; " 
+	-scrolling="no" 
+	-horizontalscrolling="no" 
+	verticalscrolling="no"
+	onload="javascript:resizeIframe(this);"
+	>
+</iframe>
+
+<script language="javascript" type="text/javascript">
+  function resizeIframe(obj) {
+  	if(obj.contentWindow.document.body.scrollHeight < 200)
+    	obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+    else
+    	obj.style.height = '200px';
+  }
+</script>

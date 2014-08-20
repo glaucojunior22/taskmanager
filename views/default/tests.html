@@ -1,0 +1,100 @@
+{{extend 'layouts/form.html'}}
+
+{{
+next_url = URL(c='default', f='tests.html', args=[next_test.id]) if next_test else None
+}}
+		    {{pass}}
+
+<div class="row-fluid">
+	<div class="span8">
+		<h3>{{= my_represent_field(db.task.test_release, record.test_release, record)}}
+			<small> {{=  my_represent_field(db.task.test_status, record.test_status, record)}}</small>
+		</h3>
+	</div>
+	<div class="span4">
+		<div class="pull-right">
+			{{if next_url:}}
+		    	<a href="{{= next_url}}" class="btn btn-small">
+		    		{{= T('Next')}} <i class="icon-arrow-right"></i></a>
+		    {{pass}}
+		</div>
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span1">
+		<small><strong>{{= T('Priority')}}</strong></small>
+		<div>
+			{{= my_represent_field(db.task.priority, record.priority, record)}}
+		</div>	
+	</div>
+	<div class="span2">
+		<small><strong>{{= T('User Task')}}</strong></small>
+		<div>
+			{{= my_represent_field(db.task.user_task, record.user_task, record)}}
+		</div>
+	</div>
+	<div class="span4">
+	</div>
+	<div class="span5">
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span12">
+		<small><strong>{{= T('Task')}}</strong></small>
+		<p>{{=XML(record.what, sanitize=False)}}</p>
+	</div>
+</div>
+<div class="row-fluid">
+	<div class="span12">
+		<small><strong>{{= T('Task Note')}}</strong></small>
+		<p>{{=XML(record.note, sanitize=False)}}</p>
+	</div>
+</div>
+<hr/>
+
+{{= form.custom.begin}}
+<div class="row-fluid">
+	<div class="span9">
+		<small><strong>{{= T('Test Note')}}</strong></small>
+		{{= form.custom.widget.note}}
+	</div>
+	<div class="span3">
+		<div class="row-fluid">
+			<div class="span12">
+				<small><strong>{{= T('Test Result')}}</strong></small>
+				{{= form.custom.widget.test_result}}
+			</div>
+		</div>
+		<div class="row-fluid">
+			<input type="submit" value="{{= T('Post')}}" class="btn btn-small btn-success">
+		</div>
+	</div>
+</div>
+
+{{if next_url:}}
+	<input name="_next" type="hidden" value="{{= next_url}}">
+{{pass}}
+
+{{= form.custom.end}}
+{{= form.element(_id='test_form_nic')}}
+
+<hr/>
+{{if has_test:}}
+{{include 'default/tests_frame.html'}}
+{{pass}}
+
+{{ 
+owner_table = record.owner_table
+owner_key  = record.owner_key
+}}
+
+{{if record.owner_table == 'solicitation':}}
+	{{= LOAD(f='solicitation_preview.load', vars=dict(oplink=record.owner_key), ajax=True)}}	
+	<hr/>
+{{pass}}
+
+{{include 'default/attachments_frame.html'}}
+
+<hr/>
+    
+{{include 'default/comments_frame.html'}}

@@ -1,0 +1,65 @@
+<div id="tasks_list">
+	{{if len(tasks):}}
+	<div class="row-fluid">
+		<div class="span6">
+			<strong>{{= T('What?')}}</strong>
+		</div>
+		<div class="span2">
+			<strong>{{= T('User Task')}}</strong>
+		</div>
+		<div class="span1">
+			<strong>{{= T('Status')}}</strong>
+		</div>
+		<div class="span1">
+			<strong>{{= T('Test')}}</strong>
+		</div>
+		<div class="span2">
+		</div>
+	</div>
+
+	{{for row in tasks:}}
+	<div class="row-fluid">
+		<div class="span6">
+			<p>{{= XML(row.what, sanitize=False)}}</p>
+		</div>
+		<div class="span2">
+			<p>{{= my_represent_field(db.task.user_task, row.user_task, row)}}</p>
+		</div>
+		<div class="span1">
+			<p>{{= my_represent_field(db.task.status, row.status, row)}}</p>
+		</div>
+		<div class="span1">
+			<p>{{= my_represent_field(db.task.test_status, row.test_status, row)}}</p>
+		</div>
+		<div class="span2">
+			<div class="pull-right">
+		      	<a href="{{= URL(f='task_detail.html', args=[row.id])}}" class="btn btn-small"><i class="icon-eye-open"></i>&nbsp;{{= T('Detail')}}</a>
+		      	<a id="task_{{= row.id}}" href="javascript:void(0);" class="btn btn-small edit-task"><i class="icon-pencil"></i></a>
+		      	<a href="{{= URL(c='default', f='task.html', args=['remove', row.id])}}" class="btn btn-small"><i class="icon-trash"></i></a>
+	    	</div>
+		</div>
+	</div>
+	{{pass}}
+	{{else:}}
+	<div class="row-fluid">
+		<p>{{= T('No Registered Task')}}</p>
+	</div>
+	{{pass}}
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $(".edit-task").click(function () {
+    	var parent = $("#dialog_modal-label").parent();
+    	$("#dialog_modal-label").remove();
+    	$(parent).append("<h3 id='dialog_modal-label'>{{= T('Edit Task')}}</h3>");
+
+    	var str = $(this).get(0).id;
+    	var id = str.split("_")[1];
+
+    	$.web2py.component("{{= URL(f='tasks_modal_form.load', args=request.args)}}?edit="+id, "dialog_modal-form");
+    	$("#dialog_modal").modal("show");
+    });
+});        
+</script>

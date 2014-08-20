@@ -1,0 +1,13 @@
+<div>
+	<datalist id="tagname_list">
+		{{for tagname in tagname_list:}}
+  		<option value="{{= tagname}}">{{= tagname}}</option>
+  		{{pass}}
+	</datalist>
+
+	{{= form.custom.begin}}
+    {{= form.custom.widget.tag_name}}
+    {{= form.custom.end}}
+</div>
+
+

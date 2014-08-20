@@ -1,0 +1,46 @@
+{{extend 'layouts/basic.html'}}
+
+  <div class="row-fluid">
+      <div class="span3">
+      <h3>{{= T('Attachments')}}</h3>
+      </div>
+      <div id="attachments_form" class="span9">
+        <div class="pull-right">
+        {{= form.custom.begin}}
+        {{= form.custom.widget.attachment}}
+        {{= form.custom.submit}}
+        {{= form.custom.end}}
+        </div>
+      </div>
+  </div>
+  {{ for row in content: }}
+  <div class="row-fluid">
+      <div class="span6">
+        <a href="{{= URL(c='default', f='attachment_download', args=[row.id])}}">
+          {{= row.name}}
+        </a>
+        <span class="muted">&nbsp; ({{= row.file_size}}k)</span>
+      </div>
+      <div class="span3">
+        {{= '%(first_name)s %(last_name)s' % db.auth_user[row.updated_by] }}&nbsp;
+        <span class="muted">{{=row.updated_on}}</span>
+      </div>
+      <div class="span3">
+        <div class="pull-right">
+          <a 
+            href="{{= URL(c='default', f='attachment_download', args=[row.id])}}" 
+            class="btn btn-small btn-primary">
+            <i class="icon-download icon-white"></i>
+            {{= T('Download')}}
+          </a>
+          <a 
+            href="{{= URL(c='default', f='attachments', args=[row.owner_table, row.owner_key], vars={'delete':row.id}) }}"
+            class="btn btn-small"
+            title="{{= T('Delete Attachment?')}}">
+            <i class="icon-trash"></i>
+          </a>
+        </div>
+      </div>
+  </div>
+  {{pass}}
+

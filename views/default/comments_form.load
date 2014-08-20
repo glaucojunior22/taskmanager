@@ -1,0 +1,39 @@
+{{
+owner_table = getlist(request.args, 0)
+owner_key  = getlist(request.args, 1)
+is_reply = request.vars.get('reply') != None
+}}
+
+<div id="comment_form">
+	<div class="row-fluid">
+		<div class="span1">
+			<div style="width:64px; height:64px; max-width:64px; overflow:hidden;">
+   				<img src="{{= get_user_photo_url(auth.user_id)}}">
+			</div>			
+		</div>
+		<div class="span11">
+			<div>
+				<strong>{{= '%(first_name)s %(last_name)s' % auth.user }}</strong>
+			</div>
+			<div>
+        		{{= form.custom.begin}}
+        		{{= form.custom.widget.comment_str}}
+				<div>
+					<input type="submit" value="{{= T('Post')}}" class="btn btn-small btn-success">
+					{{if is_reply:}}
+						<a href="javascript:void(0);" class="btn btn-small reply-cancel">{{= T('Cancel')}}</a>
+					{{pass}}
+        		</div>
+        		{{= form.custom.end}}
+        	</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $(".reply-cancel").click(function () {
+    	$.web2py.component("{{= URL(f='comments_list.load', args=[owner_table, owner_key])}}","comments_list");
+    });                                
+});             
+</script>

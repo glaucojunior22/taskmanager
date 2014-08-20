@@ -1,0 +1,31 @@
+<div class="row-fluid">
+	<div class="span4">
+		<h3>{{= T('Tasks')}}</h3>
+	</div>
+	<div class="span8">
+		<div class="pull-right">
+	    	<a href="{{= URL(f='solicitation_to_task', args=[owner_key])}}" class="btn">{{= T('One Task')}}</a>
+	    	<a id="tasks_new_task" href="javascript:void(0);" class="btn">{{= T('New Task')}}</a>
+    	</div>
+	</div>
+</div>
+
+{{include 'default/dialog_modal.html'}}
+
+{{= LOAD(f='tasks_list.load', args=[owner_table, owner_key], ajax=True)}}
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#tasks_new_task").click(function () {
+    	var parent = $("#dialog_modal-label").parent();
+    	$("#dialog_modal-label").remove();
+    	$(parent).append("<h3 id='dialog_modal-label'>{{= T('New Task')}}</h3>");
+
+    	$.web2py.component("{{= URL(f='tasks_modal_form.load', args=[owner_table, owner_key])}}", "dialog_modal-form");
+    	$("#dialog_modal").modal("show");
+    });
+                   
+
+});        
+</script>

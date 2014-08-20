@@ -1,0 +1,11 @@
+<div class="row-fluid">
+	<div class="span4">
+		<h3>{{= T('Tests')}}</h3>
+	</div>
+	<div class="span8">
+	</div>
+</div>
+
+{{= LOAD(f='tests_list.load', args=['task', record.oplink], ajax=True)}}
+
+<hr/>

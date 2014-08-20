@@ -1,0 +1,18 @@
+{{extend 'layouts/form.html'}}
+
+{{block left_sidebar_main}}
+<aside>
+	<div style="margin-top:10px;">
+		<ul class="nav nav-pills nav-stacked">
+			{{for row in releases:}}
+			<li class="{{= 'active' if str(row.id) == getlist(request.args, 0) else 'inactive'}}" ><a href="{{= URL(f=request.function, args=[row.id])}}">
+				<i class="{{= 'icon-lock' if row.is_final else 'icon-wrench'}}"></i>
+				{{= row.name}}</a>
+			</li>
+			{{pass}}
+		</ul>
+	</div>
+</aside>
+{{end}}
+
+{{= history}}

@@ -1,0 +1,39 @@
+<div id="tasks_list">
+	{{if len(tests):}}
+	<div class="row-fluid">
+		<div class="span7">
+			<strong>{{= T('Test Note')}}</strong>
+		</div>
+		<div class="span2">
+			<strong>{{= T('User Test')}}</strong>
+		</div>
+		<div class="span2">
+			<strong>{{= T('Date')}}</strong>
+		</div>
+		<div class="span1">
+			<strong>{{= T('Result')}}</strong>
+		</div>
+	</div>
+
+	{{for row in tests:}}
+	<div class="row-fluid">
+		<div class="span7">
+			<p>{{= XML(row.note, sanitize=False)}}</p>
+		</div>
+		<div class="span2">
+			<p>{{= my_represent_field(db.test.updated_by, row.updated_by, row)}}</p>
+		</div>
+		<div class="span2">
+			<p>{{= row.updated_on}}</p>
+		</div>
+		<div class="span1">
+			<p>{{= my_represent_field(db.test.test_result, row.test_result, row)}}</p>
+		</div>
+	</div>
+	{{pass}}
+	{{else:}}
+	<div class="row-fluid">
+		<p>{{= T('No Registered Tests')}}</p>
+	</div>
+	{{pass}}
+</div>

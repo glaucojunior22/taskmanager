@@ -1,0 +1,18 @@
+{{extend 'layouts/form.html'}}
+
+{{= LOAD(f='solicitation_preview.load', vars=dict(record_id=record.id), ajax=True)}}
+<hr/>
+
+{{ 
+owner_table = 'solicitation'
+owner_key  = record.oplink
+}}
+{{include 'default/attachments_frame.html'}}
+
+<hr/>
+    
+{{include 'default/comments_frame.html'}}
+
+<hr/>
+
+{{include 'default/tasks_frame.html'}}

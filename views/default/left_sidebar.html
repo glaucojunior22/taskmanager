@@ -1,0 +1,84 @@
+<aside>
+	<div style="margin-top:10px;">
+		<ul class="nav nav-tabs nav-stacked">
+			<li><a href="{{= URL(c='default', f='index')}}">
+				<i class="icon-home"></i>&nbsp;
+				{{= T('Home')}}</a>
+			</li>
+			<li><a href="{{= URL(c='default', f='solicitation', args=['new'])}}">
+				<i class="icon-bullhorn"></i>&nbsp;
+				{{= T('New Solicitation')}}</a>
+			</li>
+			<li><a href="{{= URL(c='default', f='task', args=['new'])}}">
+				<i class="icon-tasks"></i>&nbsp;
+				{{= T('New Task')}}</a>
+			</li>
+			<li><a href="{{= URL(c='default', f='customer', args=['new'])}}">
+				<i class="icon-user"></i>&nbsp;
+				{{= T('New Customer')}}</a>
+			</li>
+			<li><a href="{{= URL(c='default', f='releases', args=['new'])}}">
+				<i class="icon-tags"></i>&nbsp;
+				{{= T('New Releases')}}</a>
+			</li>
+		</ul>
+	</div>
+
+	<div class="accordion" id="left_sidebar_menu">
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#left_sidebar_menu" href="#collapseOne">
+					<i class="icon-search"></i>&nbsp;
+					{{= T('Search')}}</a>
+				</a>
+			</div>
+			<div id="collapseOne" class="accordion-body collapse">
+				<div class="accordion-inner">
+					<ul class="nav nav-pills nav-stacked">
+					  <li>
+						<a href="{{= URL(f='release_history')}}">{{= T('Release History')}}</a>
+					  </li>
+					  <li>
+						<a href="{{= URL(f='test_history')}}">{{= T('Test History')}}</a>
+					  </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="accordion-group">
+			<div class="accordion-heading">
+				<a class="accordion-toggle" data-toggle="collapse" data-parent="#left_sidebar_menu" href="#collapse_entries">
+					<i class="icon-folder-open"></i>&nbsp;
+					{{= T('Entries')}}</a>
+				</a>
+			</div>
+			<div id="collapse_entries" class="accordion-body collapse">
+				<div class="accordion-inner">
+					<ul class="nav nav-tabs nav-stacked">
+						<li><a href="{{= URL(c='default', f='solicitation')}}">
+							<i class="icon-file"></i>&nbsp;
+							{{= T('Solicitation')}}</a>
+						</li>
+						<li><a href="{{= URL(c='default', f='task')}}">
+							<i class="icon-file"></i>&nbsp;
+							{{= T('Task')}}</a>
+						</li>
+						<li><a href="{{= URL(c='default', f='customer')}}">
+							<i class="icon-file"></i>&nbsp;
+							{{= T('Customers')}}</a>
+						</li>
+						<li><a href="{{= URL(c='default', f='releases')}}">
+							<i class="icon-file"></i>&nbsp;
+							{{= T('Releases')}}</a>
+						</li>
+						<li><a href="{{= URL(c='default', f='tag')}}">
+							<i class="icon-file"></i>&nbsp;
+							{{= T('Tag')}}</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>   
+	</div>
+</aside>

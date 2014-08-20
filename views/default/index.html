@@ -1,0 +1,201 @@
+{{extend 'layouts/main.html'}}
+
+<div class="main">
+	<div class="tabbable">
+		<ul class="nav nav-tabs">
+			<li class="active">
+				<a href="#tab_solicitation" data-toggle="tab">
+					<div>
+						<i class="icon-bullhorn"></i>
+						<strong>{{= T('News Solicitations')}}</strong>
+					</div>
+					<div>
+						{{ if len(news_solicitations) == 0: }}
+							<small>{{= T('No New') }}</small>
+						{{ elif len(news_solicitations) == 1: }}
+							<small>{{= T('One New') }}</small>
+						{{ else: }}
+							<small>{{= T('%s news') % len(news_solicitations) }}</small>
+						{{ pass }}
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="#tab_my_tasks" data-toggle="tab">
+					<div>
+						<i class="icon-tasks"></i>
+						<strong>{{= T('My Tasks')}}</strong>
+					</div>
+					<div>
+						{{ if len(my_tasks) == 0: }}
+							<small>{{= T('No Task') }}</small>
+						{{ elif len(my_tasks) == 1: }}
+							<small>{{= T('One New') }}</small>
+						{{ else: }}
+							<small>{{= T('%s news') % len(my_tasks) }}</small>
+						{{ pass }}
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="#tab_waiting_test" data-toggle="tab">
+					<div>
+						<i class="icon-tasks"></i>
+						<strong>{{= T('Waiting Test')}}</strong>
+					</div>
+					<div>
+						{{ if len(waiting_test) == 0: }}
+							<small>{{= T('No Task') }}</small>
+						{{ elif len(waiting_test) == 1: }}
+							<small>{{= T('One New') }}</small>
+						{{ else: }}
+							<small>{{= T('%s news') % len(waiting_test) }}</small>
+						{{ pass }}
+					</div>
+				</a>
+			</li>
+		</ul>
+		<div class="tab-content">
+
+			<!-- begin tab solicitation -->
+			<div id="tab_solicitation" class="tab-pane active">
+				<section id="section_solicitation">
+					{{ for row in news_solicitations: }}
+					<article id="article_solicitation_{{=row.id}}" class="container-fluid">
+						<header>
+							<h3><a href="{{= URL(c='default', f='solicitation_detail', args=[row.id])}}">{{= row.subject}}</a></h3>
+							<div class="muted">
+								{{
+								pretty_date = prettydate(row.updated_on, T)
+								author_name = '%(first_name)s %(last_name)s' % db.auth_user[row.updated_by]
+								author_name = A(author_name, _href=URL(c='default', f='report', vars=dict(author=author_name) ))
+								}}
+								<small>{{=T('Updated %s') % pretty_date}}</small>
+								<small>{{=XML( T(' by %s') % author_name )}}</small>
+							</div>
+						</header>
+						<div>
+							<p>{{=XML(row.content_txt, sanitize=False)}}</p>
+						</div>
+						<footer>
+							<hr/>  							
+						</footer>
+					</article>
+					{{pass}}
+				</section>				
+			</div>
+			<!-- end tab solicitacoes -->
+
+
+			<!-- begin tab my task -->
+			<div id="tab_my_tasks" class="tab-pane">
+				<div id="tasks_list">
+					{{if len(my_tasks):}}
+					<div class="row-fluid">
+						<div class="span6">
+							<strong>{{= T('What?')}}</strong>
+						</div>
+						<div class="span2">
+							<strong>{{= T('User Task')}}</strong>
+						</div>
+						<div class="span1">
+							<strong>{{= T('Status')}}</strong>
+						</div>
+						<div class="span1">
+							<strong>{{= T('Test')}}</strong>
+						</div>
+						<div class="span2">
+						</div>
+					</div>
+
+					{{for row in my_tasks:}}
+					<div class="row-fluid">
+						<div class="span6">
+							<p>{{= XML(row.what, sanitize=False)}}</p>
+						</div>
+						<div class="span2">
+							<p>{{= my_represent_field(db.task.user_task, row.user_task, row)}}</p>
+						</div>
+						<div class="span1">
+							<p>{{= my_represent_field(db.task.status, row.status, row)}}</p>
+						</div>
+						<div class="span1">
+							<p>{{= my_represent_field(db.task.test_status, row.test_status, row)}}</p>
+						</div>
+						<div class="span2">
+							<div class="pull-right">
+								<a href="{{= URL(f='task_detail.html', args=[row.id])}}" class="btn btn-small"><i class="icon-eye-open"></i>&nbsp;{{= T('Detail')}}</a>
+								<a href="{{= URL(c='default', f='task.html', args=['edit', row.id])}}" class="btn btn-small edit-task"><i class="icon-pencil"></i></a>
+								<a href="{{= URL(c='default', f='task.html', args=['remove', row.id])}}" class="btn btn-small"><i class="icon-trash"></i></a>
+							</div>
+						</div>
+					</div>
+					{{pass}}
+					{{else:}}
+					<div class="row-fluid">
+						<p>{{= T('No Registered Task')}}</p>
+					</div>
+					{{pass}}
+				</div>
+			</div>
+			<!-- end tab my task -->
+
+			
+			<!-- begin tab waiting test -->
+			<div id="tab_waiting_test" class="tab-pane">
+				<div id="waiting_test_list">
+					{{if len(waiting_test):}}
+					<div class="row-fluid">
+						<div class="span6">
+							<strong>{{= T('What?')}}</strong>
+						</div>
+						<div class="span1">
+							<strong>{{= T('Status')}}</strong>
+						</div>
+						<div class="span1">
+							<strong>{{= T('Test')}}</strong>
+						</div>
+						<div class="span1">
+							<strong>{{= T('Release')}}</strong>
+						</div>
+						<div class="span3">
+						</div>
+					</div>
+
+					{{for row in waiting_test:}}
+					<div class="row-fluid">
+						<div class="span6">
+							<p>{{= XML(row.what, sanitize=False)}}</p>
+						</div>
+						<div class="span1">
+							<p>{{= my_represent_field(db.task.status, row.status, row)}}</p>
+						</div>
+						<div class="span1">
+							<p>{{= my_represent_field(db.task.test_status, row.test_status, row)}}</p>
+						</div>
+						<div class="span1">
+							<p>{{= my_represent_field(db.task.test_release, row.test_release, row)}}</p>
+						</div>
+						<div class="span3">
+							<div class="pull-right">
+								<a href="{{= URL(f='tests.html', args=[row.id])}}" class="btn btn-small"><i class="icon-check"></i>&nbsp;{{= T('Test')}}</a>
+
+								<a href="{{= URL(f='task_detail.html', args=[row.id])}}" class="btn btn-small"><i class="icon-eye-open"></i></a>
+								<a href="{{= URL(c='default', f='task.html', args=['edit', row.id])}}" class="btn btn-small edit-task"><i class="icon-pencil"></i></a>
+								<a href="{{= URL(c='default', f='task.html', args=['remove', row.id])}}" class="btn btn-small"><i class="icon-trash"></i></a>
+							</div>
+						</div>
+					</div>
+					{{pass}}
+					{{else:}}
+					<div class="row-fluid">
+						<p>{{= T('No task to test')}}</p>
+					</div>
+					{{pass}}
+				</div>
+			</div>
+			<!-- end tab waiting test -->
+
+
+		</div>
+	</div>
